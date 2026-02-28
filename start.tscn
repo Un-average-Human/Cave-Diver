@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://bkx6oxb65r58c"]
+
+[ext_resource type="Script" uid="uid://cuiwm230uine4" path="res://control.gd" id="1_ots34"]
+
+[node name="Control" type="Control" unique_id=1182193436]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ots34")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=599742331]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=562593048]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+color = Color(0, 0, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="1st_label" type="Label" parent="CanvasLayer/ColorRect" unique_id=1433094706]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 47.0
+offset_right = -22.0
+offset_bottom = -47.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You got called for a late rescue. People nearby heard screams coming from a cave."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="2nd_label" type="Label" parent="CanvasLayer/ColorRect" unique_id=1187650261]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 47.0
+offset_right = -22.0
+offset_bottom = -47.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "The cave had a known history of being cursed and being home to a mysterious creature."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="3rd_label" type="Label" parent="CanvasLayer/ColorRect" unique_id=2105209687]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 22.0
+offset_top = 47.0
+offset_right = -22.0
+offset_bottom = -47.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Could it be true?"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
