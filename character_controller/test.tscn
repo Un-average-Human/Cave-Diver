@@ -8,6 +8,23 @@
 [ext_resource type="AudioStream" uid="uid://1ofpdp7sjkw3" path="res://freesound_community-monster-roar-6985.mp3" id="6_g14j6"]
 [ext_resource type="AudioStream" uid="uid://dotm0eo6i1dql" path="res://yodguard-footsteps-on-mud-2-482564.mp3" id="7_vbegm"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vbegm"]
+sky_top_color = Color(0.64123005, 0.7883179, 1, 1)
+sky_horizon_color = Color(0.93718064, 0.95983297, 0.9985455, 1)
+ground_bottom_color = Color(0.16044629, 0.10396781, 0.047135733, 1)
+ground_horizon_color = Color(0.93718064, 0.95983297, 0.9985455, 1)
+energy_multiplier = 0.0
+
+[sub_resource type="Sky" id="Sky_ehkex"]
+sky_material = SubResource("ProceduralSkyMaterial_vbegm")
+
+[sub_resource type="Environment" id="Environment_xersf"]
+background_mode = 2
+sky = SubResource("Sky_ehkex")
+tonemap_mode = 2
+ssao_enabled = true
+glow_enabled = true
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eq55p"]
 albedo_color = Color(0.557753, 0.5577531, 0.5577531, 1)
 albedo_texture = ExtResource("3_6uqi0")
@@ -2178,6 +2195,9 @@ roughness = 0.35
 size = Vector3(18.835693, 14.43335, 1)
 
 [node name="Node3D" type="Node3D" unique_id=663735180]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1102879676]
+environment = SubResource("Environment_xersf")
 
 [node name="CharacterBody3D" parent="." unique_id=1940170646 instance=ExtResource("1_37kl0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 14.327276)
