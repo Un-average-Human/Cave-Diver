@@ -12,13 +12,13 @@ func _ready() -> void:
 
 func _start():
 	_1_st_label.show()
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(3).timeout
 	_1_st_label.hide()
 	_2_nd_label.show()
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(3).timeout
 	_2_nd_label.hide()
 	_3_rd_label.show()
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(2).timeout
 	_3_rd_label.hide()
 	color_rect.hide()
 	get_tree().change_scene_to_file("res://test.tscn")

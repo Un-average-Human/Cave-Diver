@@ -18,58 +18,65 @@ var SENSITIVITY := 0.01
 @onready var camera: Camera3D = $neck/Camera3D
 @onready var hands: Node3D = $neck/hands
 @onready var spooky_monster_noise: AudioStreamPlayer3D = $"../spooky_monster_noise"
-
-
+@onready var wet_steps_sfx: AudioStreamPlayer3D = $"../wet_steps/wet_steps_sfx"
+@onready var steps_sfx: AudioStreamPlayer = $steps
+@onready var crouching_steps_sfx: AudioStreamPlayer = $crouching_steps
 var is_crouched := false
 
+func _ready() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
 func _unhandled_input(event):
-	if event.is_action_pressed("ui_cancel"):
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	if Input.is_action_just_pressed("ui_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	if event is InputEventMouseButton:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		
 	if event is InputEventMouseMotion:
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			rotate_y(-event.relative.x * SENSITIVITY)
 			camera.rotate_x(-event.relative.y * SENSITIVITY)
 			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-60), deg_to_rad(40))
 	
-	if Input.is_action_just_pressed("CTRL"):
+	if Input.is_action_just_pressed("C"):
 		var tween = create_tween()
 		var camera_tween = create_tween()
 		if is_crouched == false:
+			
+			is_crouched = true
+			
 			#hands
 			tween.set_trans(Tween.TRANS_CUBIC)
 			tween.tween_property(hands, "position:z", -1.3, 1)
 			
 			#camera
 			camera_tween.set_trans(Tween.TRANS_CUBIC)
-			camera_tween.tween_property(camera, "position:y", -0.5, 0.5)
+			camera_tween.tween_property(camera, "position:y", -0.7, 0.5)
 			
 			#speed
-			SPEED = 1.5
+			SPEED = 2.5
 			
 			#collision
 			short_collision.disabled = false
 			tall_collision.disabled = true
 			
-			is_crouched = true
 		elif is_crouched == true and !ray_cast_3d.is_colliding():
+			
+			is_crouched = false
+			
 			tween.set_trans(Tween.TRANS_CUBIC)
 			tween.tween_property(hands, "position:z", 1.3, 1)
 			
 			#camera
 			camera_tween.set_trans(Tween.TRANS_CUBIC)
-			camera_tween.tween_property(camera, "position:y", 0, 0.5)
+			camera_tween.tween_property(camera, "position:y", 0.4, 0.5)
 			
 			#speed
-			SPEED = 3
+			SPEED = 5
 			
 			#collision
 			short_collision.disabled = true
 			tall_collision.disabled = false
-			
-			is_crouched = false
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -86,13 +93,25 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-	if is_crouched and velocity.length() > 0:
+	if is_crouched == true and velocity.length() > 0:
 		animation_player.play("hands")
-	elif is_crouched and velocity.length() < 0:
-		animation_player.play_backwards("hands")
-	if  is_crouched and velocity.length() == 0:
+	if  is_crouched == false or velocity.length() <= 0:
 		if animation_player.is_playing():
 			animation_player.stop(false)
+
+
+	if is_crouched and velocity.length() > 0:
+		if not crouching_steps_sfx.playing:
+			crouching_steps_sfx.play()
+	elif !is_crouched or velocity.length() <= 0:
+		if crouching_steps_sfx.playing:
+			crouching_steps_sfx.stop()
+	if !is_crouched and velocity.length() > 0:
+		if not steps_sfx.playing:
+			steps_sfx.play()
+	elif is_crouched or  velocity.length() <= 0:
+		if steps_sfx.playing:
+			steps_sfx.play()
 
 	move_and_slide()
 
@@ -102,6 +121,8 @@ func _on_sound_trigger_body_entered(body: Node3D) -> void:
 	if body == self and triggered == false:
 		audio_stream_player_3d.play()
 		triggered = true
+		await get_tree().create_timer(10).timeout
+		triggered = false
 
 
 func _on_scare_trigger_body_entered(body: Node3D) -> void:
@@ -114,3 +135,9 @@ func _on_scare_trigger_body_entered(body: Node3D) -> void:
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body == self:
 		get_tree().change_scene_to_file("res://start.tscn")
+
+
+func _on_wet_steps_body_entered(body: Node3D) -> void:
+	if body == self and triggered == false:
+		wet_steps_sfx.play()
+		triggered = true
