@@ -214,7 +214,9 @@ target_position = Vector3(0, 1, 0)
 
 [node name="steps" type="AudioStreamPlayer" parent="." unique_id=81693670]
 stream = SubResource("AudioStreamMP3_c7tqt")
+volume_db = -15.91
 
 [node name="crouching_steps" type="AudioStreamPlayer" parent="." unique_id=769338034]
 stream = ExtResource("5_obynr")
+volume_db = -10.478
 pitch_scale = 1.6

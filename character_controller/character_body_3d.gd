@@ -109,7 +109,7 @@ func _physics_process(delta: float) -> void:
 	if !is_crouched and velocity.length() > 0:
 		if not steps_sfx.playing:
 			steps_sfx.play()
-	elif is_crouched or  velocity.length() <= 0:
+	elif is_crouched or velocity.length() <= 0:
 		if steps_sfx.playing:
 			steps_sfx.play()
 

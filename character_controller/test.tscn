@@ -3256,6 +3256,7 @@ max_distance = 43.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=618292209]
 stream = ExtResource("5_ykrsh")
+volume_db = -5.0
 autoplay = true
 max_polyphony = 5
 
