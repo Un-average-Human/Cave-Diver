@@ -10,9 +10,10 @@ var triggered: bool = false
 @onready var monster_walk_animation_player_2: AnimationPlayer = $"../big_scary_monster/AnimationPlayer2"
 @onready var ray_cast_3d: RayCast3D = $RayCast3D
 
-var SPEED := 5.0
+var SPEED := 3.5
 const JUMP_VELOCITY := 4.5
 var SENSITIVITY := 0.01
+@onready var rock_sound_effect: AudioStreamPlayer3D = $"../Area3D/rock_sound_effect"
 
 @onready var neck: Node3D = $neck
 @onready var camera: Camera3D = $neck/Camera3D
@@ -22,6 +23,9 @@ var SENSITIVITY := 0.01
 @onready var steps_sfx: AudioStreamPlayer = $steps
 @onready var crouching_steps_sfx: AudioStreamPlayer = $crouching_steps
 var is_crouched := false
+@onready var rocks: StaticBody3D = $"../structures/rocks"
+@onready var collision_shape_3d_3: CollisionShape3D = $"../structures/rocks/CollisionShape3D3"
+@onready var collision_shape_3d_4: CollisionShape3D = $"../structures/rocks/CollisionShape3D4"
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -54,7 +58,7 @@ func _unhandled_input(event):
 			camera_tween.tween_property(camera, "position:y", -0.7, 0.5)
 			
 			#speed
-			SPEED = 2.5
+			SPEED = 1.5
 			
 			#collision
 			short_collision.disabled = false
@@ -72,7 +76,7 @@ func _unhandled_input(event):
 			camera_tween.tween_property(camera, "position:y", 0.4, 0.5)
 			
 			#speed
-			SPEED = 5
+			SPEED = 3.5
 			
 			#collision
 			short_collision.disabled = true
@@ -121,7 +125,7 @@ func _on_sound_trigger_body_entered(body: Node3D) -> void:
 	if body == self and triggered == false:
 		audio_stream_player_3d.play()
 		triggered = true
-		await get_tree().create_timer(10).timeout
+		await get_tree().create_timer(6).timeout
 		triggered = false
 
 
@@ -141,3 +145,15 @@ func _on_wet_steps_body_entered(body: Node3D) -> void:
 	if body == self and triggered == false:
 		wet_steps_sfx.play()
 		triggered = true
+		
+
+
+func _on__rock_area_3d_body_entered(body: Node3D) -> void:
+	if body == self and triggered == false:
+		triggered = true
+		rock_sound_effect.play()
+		rocks.hide()
+		collision_shape_3d_3.queue_free()
+		collision_shape_3d_4.queue_free()
+		await get_tree().create_timer(6).timeout
+		triggered = false

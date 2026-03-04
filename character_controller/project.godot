@@ -39,6 +39,10 @@ window/show_image=true
 
 project/assembly_name="character_controller"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
+
 [filesystem]
 
 import/blender/enabled=false
